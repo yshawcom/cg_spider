@@ -1,19 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-"""
--------------------------------------------------
-   File Name：     lazyProperty
-   Description :
-   Author :        JHao
-   date：          2016/12/3
--------------------------------------------------
-   Change Activity:
-                   2016/12/3:
--------------------------------------------------
-"""
-
-__author__ = 'JHao'
+__author__ = 'shaw'
 
 
 class LazyProperty(object):

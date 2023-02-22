@@ -2,18 +2,10 @@
 
 
 """
--------------------------------------------------
-   File Name：     WebRequest
-   Description :   Network Requests Class
-   Author :        J_hao
-   date：          2017/7/31
--------------------------------------------------
-   Change Activity:
-                   2017/7/31:
--------------------------------------------------
+网路请求
 """
 
-__author__ = 'J_hao'
+__author__ = 'shaw'
 
 import random
 import time
@@ -29,7 +21,6 @@ conf = ConfigHandler()
 
 
 class WebRequest(object):
-    # name = "web_request"
 
     def __init__(self, log, *args, **kwargs):
         self.log = log

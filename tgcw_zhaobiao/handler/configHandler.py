@@ -47,7 +47,15 @@ class ConfigHandler(with_metaclass(Singleton)):
         是否需要IP代理
         :return:
         """
-        return bool(os.environ.get('NEED_PROXY', setting.NEED_PROXY))
+        need_proxy_bool = True
+        need_proxy = os.environ.get('NEED_PROXY', setting.NEED_PROXY)
+        if need_proxy is True or need_proxy == 'True':
+            need_proxy_bool = True
+        elif need_proxy is False or need_proxy == 'False':
+            need_proxy_bool = False
+        else:
+            raise ValueError('LOG_LEVEL 配置错误')
+        return need_proxy_bool
 
     @LazyProperty
     def proxy_pool_url(self):

@@ -11,6 +11,7 @@ import logging
 import os
 from logging.handlers import TimedRotatingFileHandler
 
+import setting
 from handler.configHandler import ConfigHandler
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -22,8 +23,6 @@ if not os.path.exists(LOG_PATH):
         os.mkdir(LOG_PATH)
     except FileExistsError:
         pass
-
-FORMATTER = '%(asctime)s %(levelname)-5s %(name)s %(filename)-17s:%(lineno)-4d %(message)s'
 
 conf = ConfigHandler()
 
@@ -57,7 +56,7 @@ class LogHandler(logging.Logger):
             file_handler.setLevel(self.level)
         else:
             file_handler.setLevel(level)
-        formatter = logging.Formatter(FORMATTER)
+        formatter = logging.Formatter(setting.LOG_FORMATTER)
 
         file_handler.setFormatter(formatter)
         self.file_handler = file_handler
@@ -70,7 +69,7 @@ class LogHandler(logging.Logger):
         :return:
         """
         stream_handler = logging.StreamHandler()
-        formatter = logging.Formatter(FORMATTER)
+        formatter = logging.Formatter(setting.LOG_FORMATTER)
         stream_handler.setFormatter(formatter)
         if not level:
             stream_handler.setLevel(self.level)

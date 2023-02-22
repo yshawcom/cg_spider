@@ -12,15 +12,21 @@ from sqlalchemy import Column, String, Integer, DateTime, Text
 from db.mysqlDb import Base
 
 
-class XmggNotice(Base):
+class ZhaobiaoNotice(Base):
     # 表名
-    __tablename__ = 'tgcw_zhaobiao_xmgg'
+    __tablename__ = 'tgcw_zhaobiao_notice'
 
     # 表主键
     id = Column(Integer(), primary_key=True, autoincrement=True)
 
     # 原id
     ori_id = Column(Integer())
+
+    # 公告类型编码
+    type_code = Column(String())
+
+    # 公告类型
+    type_name = Column(String())
 
     # 公告标题
     notice_title = Column(String())

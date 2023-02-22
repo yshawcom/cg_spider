@@ -4,8 +4,13 @@
 
 __author__ = 'shaw'
 
-from spider import xmggSpider
+import setting
+from spider.zhaobiaoSpider import ZhaobiaoSpider
 
 if __name__ == '__main__':
     # 招标公告
-    xmggSpider.run()
+    ZhaobiaoSpider(setting.TYPE_XMGG).run()
+    # 中标候选人公示
+    ZhaobiaoSpider(setting.TYPE_BIDZBGS).run()
+    # 中标结果公告
+    ZhaobiaoSpider(setting.TYPE_BIDZBGG).run()

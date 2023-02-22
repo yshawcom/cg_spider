@@ -11,3 +11,11 @@
 * [中标候选人公示](http://zhaobiao.tgcw.net.cn/cms/channel/bidzbgs/index.htm)
 
 * [中标结果公告](http://zhaobiao.tgcw.net.cn/cms/channel/bidzbgg/index.htm)
+
+### Docker 部署
+
+* 构造 Docker 镜像
+
+```shell
+docker build -t spider-tgcw-zhaobiao:v1 .
+```
