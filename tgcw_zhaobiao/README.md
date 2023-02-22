@@ -4,7 +4,7 @@
 
 [地址](http://zhaobiao.tgcw.net.cn/cms/index.htm)
 
-### 招标公告
+### 业务公告
 
 * [招标公告](http://zhaobiao.tgcw.net.cn/cms/channel/xmgg/index.htm)
 

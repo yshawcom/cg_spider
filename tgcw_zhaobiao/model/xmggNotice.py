@@ -7,9 +7,9 @@
 
 __author__ = 'shaw'
 
-from sqlalchemy import Column, String, Integer, DateTime, TEXT
+from sqlalchemy import Column, String, Integer, DateTime, Text
 
-from db import Base
+from db.mysqlDb import Base
 
 
 class XmggNotice(Base):
@@ -29,7 +29,7 @@ class XmggNotice(Base):
     publish_time = Column(DateTime())
 
     # 公告内容
-    notice_content = Column(TEXT())
+    notice_content = Column(Text())
 
     # 更新时间
     update_time = Column(DateTime())

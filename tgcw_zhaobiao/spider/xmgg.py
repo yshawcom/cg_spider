@@ -7,26 +7,22 @@
 
 __author__ = 'shaw'
 
-import logging.config
 from datetime import timedelta, datetime
 
 import requests
-import yaml
 from bs4 import BeautifulSoup
 
-import failed_request
 import setting
-import xmgg_notice_dao
-from util import user_agent, proxy
-from xmgg_notice import XmggNotice
+from dao import xmggNoticeDao
+from handler.configHandler import ConfigHandler
+from handler.logHandler import LogHandler
+from model.xmggNotice import XmggNotice
+from util import userAgent, proxyPool, failedRequest
 
-expired_date = datetime.now() - timedelta(days=setting.INTERVAL_DAYS)
+conf = ConfigHandler()
+log = LogHandler('tgcw_zhaobiao')
 
-# 加载日志配置文件
-with open('./logconf.yml', 'r', encoding='utf-8') as f:
-    dict_conf = yaml.safe_load(f)
-logging.config.dictConfig(dict_conf)
-log = logging.getLogger(__name__)
+expired_date = datetime.now() - timedelta(days=conf.interval_days)
 
 
 def judge_expired(date_str):
@@ -50,7 +46,7 @@ def parse_detail_html(url, html):
     log.info('公告ID: %s', id)
 
     # 判断数据库是否已存在相同id数据
-    notice = xmgg_notice_dao.find_top_by_ori_id(int(id))
+    notice = xmggNoticeDao.find_top_by_ori_id(int(id))
     if notice is not None:
         log.info('公告 %s 已存在', id)
         return
@@ -75,7 +71,7 @@ def parse_detail_html(url, html):
     notice.publish_time = datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
     notice.notice_content = str(notice_content).replace('\n', '').strip()
     notice.update_time = datetime.now()
-    xmgg_notice_dao.save(notice)
+    xmggNoticeDao.save(notice)
     log.info('公告 %s 已保存到数据库', id)
 
 
@@ -85,9 +81,9 @@ def retry_request_detail(url):
     :param url:
     :return:
     """
-    failed_request.add(url)
-    failed_times = failed_request.get(url)
-    if failed_request.get(url) < setting.MAX_RETRY:
+    failedRequest.add(url)
+    failed_times = failedRequest.get(url)
+    if failedRequest.get(url) < conf.max_retry:
         # 重试
         log.info('================ 第 %s 次请求公告页: %s', failed_times + 1, url)
         request_detail(url)
@@ -102,18 +98,18 @@ def request_detail(url):
     :return:
     """
     log.info('公告页URL: %s', url)
-    headers = {'User-Agent': user_agent.get()}
+    headers = {'User-Agent': userAgent.get()}
     proxies = {}
-    if setting.NEED_PROXY:
-        proxies = proxy.get(setting.BASE_URL)
+    if conf.need_proxy:
+        proxies = proxyPool.get(setting.BASE_URL)
         log.info('使用代理IP: %s', proxies)
 
     try:
-        resp = requests.get(setting.BASE_URL + url, headers=headers, proxies=proxies, timeout=setting.REQUEST_TIMEOUT)
+        resp = requests.get(setting.BASE_URL + url, headers=headers, proxies=proxies, timeout=conf.request_timeout)
         log.info('公告页请求状态: %s', resp.status_code)
         if resp.status_code == 200:
             # 请求成功后，删除之前的失败记录
-            failed_request.remove(url)
+            failedRequest.remove(url)
             parse_detail_html(url, resp.text)
         else:
             retry_request_detail(url)
@@ -163,9 +159,9 @@ def retry_request_list(url, page_no):
     :param page_no:
     :return:
     """
-    failed_request.add(url)
-    failed_times = failed_request.get(url)
-    if failed_request.get(url) < setting.MAX_RETRY:
+    failedRequest.add(url)
+    failed_times = failedRequest.get(url)
+    if failedRequest.get(url) < conf.max_retry:
         # 重试
         log.info('')
         log.info('---------------- 第 %s 次请求列表第 %s 页', failed_times + 1, page_no)
@@ -183,18 +179,18 @@ def request_list(page_no):
 
     url = setting.LIST_URL + str(page_no)
     log.info('列表URL: %s', url)
-    headers = {'User-Agent': user_agent.get()}
+    headers = {'User-Agent': userAgent.get()}
     proxies = {}
-    if setting.NEED_PROXY:
-        proxies = proxy.get(setting.LIST_URL)
+    if conf.need_proxy:
+        proxies = proxyPool.get(setting.LIST_URL)
         log.info('使用代理IP: %s', proxies)
 
     try:
-        resp = requests.get(url, headers=headers, proxies=proxies, timeout=setting.REQUEST_TIMEOUT)
+        resp = requests.get(url, headers=headers, proxies=proxies, timeout=conf.request_timeout)
         log.info('列表第 %s 页请求状态: %s', page_no, resp.status_code)
         if resp.status_code == 200:
             # 请求成功后，删除之前的失败记录
-            failed_request.remove(url)
+            failedRequest.remove(url)
             expired_notice = parse_list_html(resp.text)
             if expired_notice is False:
                 # 整个列表都没有过期的公告，继续爬下一页

@@ -3,8 +3,8 @@
 
 __author__ = 'shaw'
 
-from db import DBSession
-from xmgg_notice import XmggNotice
+from db.mysqlDb import DBSession
+from model.xmggNotice import XmggNotice
 
 
 def find_top_by_ori_id(ori_id):
