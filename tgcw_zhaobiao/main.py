@@ -4,8 +4,8 @@
 
 __author__ = 'shaw'
 
-from spider import xmgg
+from spider import xmggSpider
 
 if __name__ == '__main__':
     # 招标公告
-    xmgg.run()
+    xmggSpider.run()

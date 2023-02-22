@@ -19,7 +19,7 @@ from model.xmggNotice import XmggNotice
 from util.webRequest import WebRequest
 
 conf = ConfigHandler()
-log = LogHandler('tgcw_zhaobiao')
+log = LogHandler('tgcw_zhaobiao_xmgg')
 
 expired_date = datetime.now() - timedelta(days=conf.interval_days)
 
@@ -84,7 +84,7 @@ def request_detail(url):
     """
 
     log.info('请求公告页URL: %s', url)
-    resp_text = WebRequest().get(setting.BASE_URL + url).text
+    resp_text = WebRequest(log).get(setting.BASE_URL + url).text
     parse_detail_html(url, resp_text)
 
 
@@ -100,6 +100,9 @@ def parse_list_html(html):
 
     soup = BeautifulSoup(html, 'lxml')
     uls = soup.select('#main > div.listPage.wrap > div > div.mleft > div > div.m-bd > div > div > ul')
+    if len(uls) <= 0:
+        return expired_notice
+
     # log.error(uls)
     ul = uls[0]
     for li in ul.find_all('li'):
@@ -128,7 +131,7 @@ def request_list(page_no):
     url = setting.LIST_URL + str(page_no)
     log.info('请求列表URL: %s', url)
 
-    resp_text = WebRequest().get(url).text
+    resp_text = WebRequest(log).get(url).text
     expired_notice = parse_list_html(resp_text)
     if expired_notice is False:
         # 整个列表都没有过期的公告，继续爬下一页

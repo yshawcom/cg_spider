@@ -18,12 +18,28 @@ class ConfigHandler(with_metaclass(Singleton)):
         pass
 
     @LazyProperty
-    def max_retry(self):
+    def request_retry_time(self):
         """
-        最大重试次数
+        请求重试次数
         :return:
         """
-        return int(os.environ.get('MAX_RETRY', setting.MAX_RETRY))
+        return int(os.environ.get('REQUEST_RETRY_TIME', setting.REQUEST_RETRY_TIME))
+
+    @LazyProperty
+    def request_retry_interval(self):
+        """
+        请求重试间隔
+        :return:
+        """
+        return int(os.environ.get('REQUEST_RETRY_INTERVAL', setting.REQUEST_RETRY_INTERVAL))
+
+    @LazyProperty
+    def request_timeout(self):
+        """
+        请求超时（s）
+        :return:
+        """
+        return int(os.environ.get('REQUEST_TIMEOUT', setting.REQUEST_TIMEOUT))
 
     @LazyProperty
     def need_proxy(self):
@@ -48,14 +64,6 @@ class ConfigHandler(with_metaclass(Singleton)):
         :return:
         """
         return int(os.environ.get('INTERVAL_DAYS', setting.INTERVAL_DAYS))
-
-    @LazyProperty
-    def request_timeout(self):
-        """
-        请求超时（s）
-        :return:
-        """
-        return int(os.environ.get('REQUEST_TIMEOUT', setting.REQUEST_TIMEOUT))
 
     @LazyProperty
     def mysql_hostname(self):

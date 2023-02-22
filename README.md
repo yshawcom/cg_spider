@@ -1,6 +1,6 @@
 # cg_spider
 
-Python 3.8
+Python 3.5, 3.6, 3.7, 3.8, 3.9
 
 ## Help
 

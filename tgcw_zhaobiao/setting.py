@@ -8,20 +8,20 @@ BASE_URL = 'http://zhaobiao.tgcw.net.cn'
 # 列表页URL
 LIST_URL = BASE_URL + '/cms/channel/xmgg/index.htm?pageNo='
 
-# 最大重试次数
-MAX_RETRY = 3
+# 请求重试次数
+REQUEST_RETRY_TIME = 3
+# 请求重试间隔
+REQUEST_RETRY_INTERVAL = 3
+# 请求超时（s）
+REQUEST_TIMEOUT = 10
 
 # 是否需要IP代理
 NEED_PROXY = True
-
 # 代理IP池url
 PROXY_POOL_URL = 'http://127.0.0.1:5010/get/'
 
 # 每次执行爬取过去几天的数据
 INTERVAL_DAYS = 20
-
-# 请求超时（s）
-REQUEST_TIMEOUT = 10
 
 # MySQL数据库连接
 MYSQL_HOSTNAME = 'localhost'

@@ -23,7 +23,7 @@ if not os.path.exists(LOG_PATH):
     except FileExistsError:
         pass
 
-FORMATTER = '%(asctime)s %(levelname)-5s %(name)-7s %(filename)-17s:%(lineno)-4d %(message)s'
+FORMATTER = '%(asctime)s %(levelname)-5s %(name)s %(filename)-17s:%(lineno)-4d %(message)s'
 
 conf = ConfigHandler()
 
