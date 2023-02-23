@@ -4,3 +4,4 @@ requests
 SQLAlchemy
 mysql-connector
 lxml
+APScheduler

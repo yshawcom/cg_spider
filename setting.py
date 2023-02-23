@@ -4,24 +4,8 @@
 __author__ = 'shaw'
 
 # 日志格式化
-LOG_FORMATTER = '%(asctime)s %(levelname)-5s %(name)s %(filename)-20s:%(lineno)-4d %(message)s'
 
-BASE_URL = 'http://zhaobiao.tgcw.net.cn'
-# 列表页URL
-LIST_URL = BASE_URL + '/cms/channel/%s/index.htm?pageNo=%s'
-
-# 招标公告
-TYPE_XMGG = 'xmgg'
-# 中标候选人公示
-TYPE_BIDZBGS = 'bidzbgs'
-# 中标结果公告
-TYPE_BIDZBGG = 'bidzbgg'
-# 公告类型名称
-TYPE_NAME_DICT = {
-    TYPE_XMGG: '招标公告',
-    TYPE_BIDZBGS: '中标候选人公示',
-    TYPE_BIDZBGG: '中标结果公告',
-}
+LOG_FORMATTER = '%(asctime)s %(levelname)-5s %(name)s %(filename)-21s:%(lineno)-3d %(message)s'
 
 # 请求重试次数
 REQUEST_RETRY_TIME = 3
@@ -49,3 +33,9 @@ MYSQL_SCHEMA = 'cg_spider'
 LOG_LEVEL = 'DEBUG'
 # 日志文件保留数量
 LOG_BACKUP_COUNT = 3
+
+# 定时任务
+# 天工e招（天工开物电子招投标交易平台）
+TGCW_ZHAOBIAO_XMGG_CRON = '12 17 * * *'  # 招标公告
+TGCW_ZHAOBIAO_BIDZBGS_CRON = '13 17 * * *'  # 中标候选人公示
+TGCW_ZHAOBIAO_BIDZBGG_CRON = '14 17 * * *'  # 中标结果公告

@@ -1,4 +1,4 @@
-CREATE TABLE `tgcw_zhaobiao_notice`
+CREATE TABLE `tgcw_zhaobiao`
 (
     `id`             int(11) NOT NULL AUTO_INCREMENT,
     `ori_id`         int(11) DEFAULT NULL,

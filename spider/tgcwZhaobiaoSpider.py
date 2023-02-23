@@ -2,7 +2,7 @@
 
 
 """
-招标公告
+天工e招（天工开物电子招投标交易平台）
 """
 
 __author__ = 'shaw'
@@ -12,20 +12,21 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 import setting
-from dao import zhaobiaoNoticeDao
+from const import tgcwZhaobiaoConst
+from dao import tgcwZhaobiaoDao
 from handler.configHandler import ConfigHandler
 from handler.logHandler import LogHandler
-from model.zhaobiaoNotice import ZhaobiaoNotice
+from model.tgcwZhaobiaoModel import TgcwZhaobiaoModel
 from util import commonUtil
 from util.webRequest import WebRequest
 
 
-class ZhaobiaoSpider:
+class TgcwZhaobiaoSpider:
 
     def __init__(self, notice_type):
         self.type = notice_type
         self.conf = ConfigHandler()
-        self.log = LogHandler('tgcw_zhaobiao')
+        self.log = LogHandler(tgcwZhaobiaoConst.NAME)
 
     def parse_detail_html(self, url, html):
         """
@@ -39,7 +40,7 @@ class ZhaobiaoSpider:
         self.log.info('公告ID: %s', id)
 
         # 判断数据库是否已存在相同id数据
-        notice = zhaobiaoNoticeDao.find_top_by_ori_id_and_type_code(int(id), self.type)
+        notice = tgcwZhaobiaoDao.find_top_by_ori_id_and_type_code(int(id), self.type)
         if notice is not None:
             self.log.info('公告 %s 已存在', id)
             return
@@ -63,15 +64,15 @@ class ZhaobiaoSpider:
         # self.log.info('公告正文: %s', str(notice_content))
 
         # 保存到数据库
-        notice = ZhaobiaoNotice()
+        notice = TgcwZhaobiaoModel()
         notice.ori_id = id
         notice.type_code = self.type
-        notice.type_name = setting.TYPE_NAME_DICT.get(self.type, '')
+        notice.type_name = setting.TYPE_DICT.get(self.type, '')
         notice.notice_title = title
         notice.publish_time = datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
         notice.notice_content = str(notice_content).replace('\n', '').strip()
         notice.update_time = datetime.now()
-        zhaobiaoNoticeDao.save(notice)
+        tgcwZhaobiaoDao.save(notice)
         self.log.info('公告 %s 已保存到数据库', id)
 
     def request_detail(self, url):
@@ -82,7 +83,7 @@ class ZhaobiaoSpider:
         """
 
         self.log.info('请求公告页URL: %s', url)
-        resp_text = WebRequest(self.log).get(setting.BASE_URL + url).text
+        resp_text = WebRequest(self.log).get(tgcwZhaobiaoConst.BASE_URL + url).text
         self.parse_detail_html(url, resp_text)
 
     def parse_list_html(self, html):
@@ -124,7 +125,7 @@ class ZhaobiaoSpider:
         :return:
         """
 
-        url = setting.LIST_URL % (self.type, page_no)
+        url = tgcwZhaobiaoConst.LIST_URL % (self.type, page_no)
         self.log.info('请求列表URL: %s', url)
 
         resp_text = WebRequest(self.log).get(url).text
@@ -143,3 +144,12 @@ class ZhaobiaoSpider:
         self.log.info('')
         self.log.info('---------------- 请求列表第 %s 页', page_no)
         self.request_list(page_no)
+
+
+if __name__ == '__main__':
+    # 招标公告
+    TgcwZhaobiaoSpider(tgcwZhaobiaoConst.XMGG).run()
+    # 中标候选人公示
+    TgcwZhaobiaoSpider(tgcwZhaobiaoConst.BIDZBGS).run()
+    # 中标结果公告
+    TgcwZhaobiaoSpider(tgcwZhaobiaoConst.BIDZBGG).run()

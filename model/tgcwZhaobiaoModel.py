@@ -2,7 +2,7 @@
 
 
 """
-招标公告
+天工e招（天工开物电子招投标交易平台）
 """
 
 __author__ = 'shaw'
@@ -12,9 +12,9 @@ from sqlalchemy import Column, String, Integer, DateTime, Text
 from db.mysqlDb import Base
 
 
-class ZhaobiaoNotice(Base):
+class TgcwZhaobiaoModel(Base):
     # 表名
-    __tablename__ = 'tgcw_zhaobiao_notice'
+    __tablename__ = 'tgcw_zhaobiao'
 
     # 表主键
     id = Column(Integer(), primary_key=True, autoincrement=True)
