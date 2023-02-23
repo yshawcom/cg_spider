@@ -25,9 +25,9 @@ TYPE_NAME_DICT = {
 
 # 请求重试次数
 REQUEST_RETRY_TIME = 3
-# 请求重试间隔
+# 请求重试间隔(s)
 REQUEST_RETRY_INTERVAL = 3
-# 请求超时（s）
+# 请求超时(s)
 REQUEST_TIMEOUT = 10
 
 # 是否需要IP代理

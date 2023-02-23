@@ -28,7 +28,7 @@ class ConfigHandler(with_metaclass(Singleton)):
     @LazyProperty
     def request_retry_interval(self):
         """
-        请求重试间隔
+        请求重试间隔(s)
         :return:
         """
         return int(os.environ.get('REQUEST_RETRY_INTERVAL', setting.REQUEST_RETRY_INTERVAL))
@@ -36,7 +36,7 @@ class ConfigHandler(with_metaclass(Singleton)):
     @LazyProperty
     def request_timeout(self):
         """
-        请求超时（s）
+        请求超时(s)
         :return:
         """
         return int(os.environ.get('REQUEST_TIMEOUT', setting.REQUEST_TIMEOUT))
@@ -104,14 +104,6 @@ class ConfigHandler(with_metaclass(Singleton)):
         :return:
         """
         return os.environ.get('MYSQL_PASSWORD', setting.MYSQL_PASSWORD)
-
-    @LazyProperty
-    def mysql_schema(self):
-        """
-        MySQL数据库连接schema
-        :return:
-        """
-        return os.environ.get('MYSQL_SCHEMA', setting.MYSQL_SCHEMA)
 
     @LazyProperty
     def mysql_schema(self):
