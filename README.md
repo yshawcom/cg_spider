@@ -12,6 +12,13 @@
 * [中标候选人公示](http://zhaobiao.tgcw.net.cn/cms/channel/bidzbgs/index.htm)
 * [中标结果公告](http://zhaobiao.tgcw.net.cn/cms/channel/bidzbgg/index.htm)
 
+### ebnew
+
+[必联网](https://www.ebnew.com/)
+
+* [招标项目](https://ss.ebnew.com/tradingSearch/index.htm)
+* [采购项目](https://ss.ebnew.com/purchaseSearch/list.htm)
+
 ## 支持版本
 
 Python 3.5, 3.6, 3.7, 3.8, 3.9

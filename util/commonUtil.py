@@ -5,6 +5,8 @@ __author__ = 'shaw'
 
 from datetime import datetime, timedelta
 
+import requests
+
 
 def with_metaclass(meta, *bases):
     """Create a base class with a metaclass."""
@@ -50,3 +52,18 @@ def cron_2_trigger(cron_str):
         elif index == 4:
             trigger_dict['day_of_week'] = value
     return trigger_dict
+
+
+def cookie_str_2_jar(cookie_str):
+    """
+    cookie字符串转cookiejar
+    """
+    cookie_dict = {}
+    for item in cookie_str.split(';'):
+        item_kv = item.split('=')
+        key = item_kv[0].strip()
+        if len(item_kv) == 1:
+            cookie_dict[key] = ''
+        else:
+            cookie_dict[key] = item_kv[1].strip()
+    return requests.utils.cookiejar_from_dict(cookie_dict)

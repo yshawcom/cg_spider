@@ -10,12 +10,16 @@ __author__ = 'shaw'
 import random
 import time
 
-import requests
+import urllib3
 from lxml import etree
+from requests import request
 from requests.models import Response
 
 from handler.configHandler import ConfigHandler
 from util import proxyPool
+
+# https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+urllib3.disable_warnings()
 
 conf = ConfigHandler()
 
@@ -89,47 +93,57 @@ class WebRequest(object):
             'Accept-Language': 'zh-CN,zh;q=0.8'
         }
 
-    def get(self, url, header=None, *args, **kwargs):
-        """
-        get method
-        :param url: target url
-        :param header: headers
-        :return:
-        """
+    def proxies(self, url):
+        p = None
+        if conf.need_proxy:
+            p = proxyPool.get(url)
+            self.log.info('代理IP %s', p)
+        return p
+
+    def req(self, method, url, params=None, data=None, json=None, cookies=None, **kwargs):
 
         retry_time = conf.request_retry_time
         retry_interval = conf.request_retry_interval
 
-        headers = self.header
-        if header and isinstance(header, dict):
-            headers.update(header)
-
         while True:
             self.log.info('请求 %s', url)
 
-            proxies = {}
-            if conf.need_proxy:
-                proxies = proxyPool.get(url)
-                self.log.info('使用代理IP %s', proxies)
+            if cookies is not None:
+                self.log.info('cookies: %s', cookies)
 
             try:
-                self.response = requests.get(url,
-                                             headers=header,
-                                             timeout=conf.request_timeout,
-                                             proxies=proxies,
-                                             *args,
-                                             **kwargs)
-                return self
+                self.response = request(method,
+                                        url,
+                                        params=params,
+                                        data=data,
+                                        json=json,
+                                        headers=self.header,
+                                        cookies=cookies,
+                                        timeout=conf.request_timeout,
+                                        proxies=self.proxies(url),
+                                        verify=False,
+                                        **kwargs)
+                if self.response.status_code != 200 and self.response.status_code != 521:
+                    raise Exception('status_code=' + str(self.response.status_code))
+                else:
+                    return self
             except Exception as e:
                 self.log.error("请求 %s 错误" % url)
                 self.log.exception(e)
-                retry_time -= 1
                 if retry_time <= 0:
                     resp = Response()
                     resp.status_code = 200
                     return self
+                retry_time -= 1
                 self.log.info("%s 秒后第 %s 次重试" % (retry_interval, conf.request_retry_time - retry_time))
                 time.sleep(retry_interval)
+
+    def get(self, url, params=None, cookies=None, **kwargs):
+        kwargs.setdefault('allow_redirects', True)
+        return self.req('get', url, params=params, cookies=cookies, **kwargs)
+
+    def post(self, url, data=None, json=None, cookies=None, **kwargs):
+        return self.req('post', url, data=data, json=json, cookies=cookies, **kwargs)
 
     @property
     def tree(self):
