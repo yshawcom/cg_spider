@@ -5,3 +5,5 @@ SQLAlchemy
 mysql-connector
 lxml
 APScheduler
+PyExecJS
+concurrent-log-handler

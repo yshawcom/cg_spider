@@ -9,7 +9,11 @@ __author__ = 'shaw'
 
 import logging
 import os
-from logging.handlers import TimedRotatingFileHandler
+# 解决日志文件多线程写入问题
+# https://github.com/Preston-Landers/concurrent-log-handler
+from datetime import datetime
+
+from concurrent_log_handler import ConcurrentRotatingFileHandler
 
 import setting
 from handler.configHandler import ConfigHandler
@@ -36,8 +40,6 @@ class LogHandler(logging.Logger):
         if stream:
             self.__setStreamHandler__()
         if file:
-            # Windows下TimedRotatingFileHandler线程不安全
-            # if platform.system() != "Windows":
             self.__setFileHandler__()
 
     def __setFileHandler__(self, level=None):
@@ -47,11 +49,15 @@ class LogHandler(logging.Logger):
         :return:
         """
 
-        file_name = os.path.join(LOG_PATH, '{name}.log'.format(name=self.name))
-        # 设置日志回滚, 保存在log目录, 一天保存一个文件, 保留15天
-        file_handler = TimedRotatingFileHandler(filename=file_name, when='D', interval=1,
-                                                backupCount=conf.log_backup_count, encoding='utf-8')
-        file_handler.suffix = '%Y%m%d.log'
+        time = datetime.now().strftime("%Y%m%d%H")
+        file_name = os.path.join(LOG_PATH, '%s-%s.log' % (self.name, time))
+        # file_handler = TimedRotatingFileHandler(filename=file_name, when='D', interval=1, backupCount=conf.log_backup_count, encoding='utf-8')
+        # file_handler.suffix = '%Y%m%d%H%M.log'
+        # 日志滚动，日志文件最大2M
+        file_handler = ConcurrentRotatingFileHandler(file_name,
+                                                     maxBytes=2 * 1024 * 1024,
+                                                     backupCount=conf.log_backup_count,
+                                                     encoding='utf-8')
         if not level:
             file_handler.setLevel(self.level)
         else:
