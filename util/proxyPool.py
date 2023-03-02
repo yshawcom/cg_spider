@@ -16,15 +16,17 @@ conf = ConfigHandler()
 
 
 def get_proxy(need_https):
-    json = requests.get(conf.proxy_pool_url).json()
-    if need_https == json.get('https'):
-        return json.get('proxy')
-    return get_proxy(need_https)
+    if need_https:
+        type = '?type=https'
+    else:
+        type = '?type=http'
+    resp = requests.get(conf.proxy_pool_url + type)
+    return resp.json().get('proxy')
 
 
 def get(url):
     if url.startswith('https://'):
-        return {'https': 'http://' + get_proxy(True)}
+        return {'https': 'https://' + get_proxy(True)}
     if url.startswith('http://'):
         return {'http': 'http://' + get_proxy(False)}
     return {}
