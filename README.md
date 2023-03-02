@@ -9,9 +9,7 @@
 [天工e招（天工开物电子招投标交易平台）](http://zhaobiao.tgcw.net.cn/cms/index.htm)
 
 * [招标公告](http://zhaobiao.tgcw.net.cn/cms/channel/xmgg/index.htm)
-
 * [中标候选人公示](http://zhaobiao.tgcw.net.cn/cms/channel/bidzbgs/index.htm)
-
 * [中标结果公告](http://zhaobiao.tgcw.net.cn/cms/channel/bidzbgg/index.htm)
 
 ## 支持版本
@@ -59,9 +57,9 @@ docker run -d \
 
 | 变量 | 说明 | 默认值 | 
 | --- | --- | --- | 
-| `REQUEST_RETRY_TIME` | 请求重试次数 | 3 | 
-| `REQUEST_RETRY_INTERVAL` | 请求重试间隔(s) | 3 | 
-| `REQUEST_TIMEOUT` | 请求超时(s) | 10 | 
+| `REQUEST_RETRY_TIME` | 请求重试次数 | 1 | 
+| `REQUEST_RETRY_INTERVAL` | 请求重试间隔(s) | 1 | 
+| `REQUEST_TIMEOUT` | 请求超时(s) | 7 | 
 | `NEED_PROXY` | 是否需要IP代理 | `True` | 
 | `PROXY_POOL_URL` | 代理IP池url | `http://127.0.0.1:5010/get/` | 
 | `INTERVAL_DAYS` | 每次执行爬取数据天数 | 2 | 
@@ -72,7 +70,7 @@ docker run -d \
 | `MYSQL_PASSWORD` | MySQL数据库连接password | `123456` | 
 | `MYSQL_SCHEMA` | MySQL数据库连接schema | `cg_spider` | 
 | `LOG_LEVEL` | 日志级别 | `DEBUG` | 
-| `LOG_BACKUP_COUNT` | 日志文件保留数量 | 3 | 
+| `LOG_BACKUP_COUNT` | 日志文件保留数量 | 30 | 
 | `TGCW_ZHAOBIAO_XMGG_CRON` | 天工e招招标公告执行Cron |  | 
 | `TGCW_ZHAOBIAO_BIDZBGS_CRON` | 天工e招中标候选人公示执行Cron |  | 
 | `TGCW_ZHAOBIAO_BIDZBGG_CRON` | 天工e招中标结果公告执行Cron |  | 

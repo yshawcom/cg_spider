@@ -4,15 +4,14 @@
 __author__ = 'shaw'
 
 # 日志格式化
-
 LOG_FORMATTER = '%(asctime)s %(levelname)-5s %(name)s %(filename)-21s:%(lineno)-3d %(message)s'
 
 # 请求重试次数
-REQUEST_RETRY_TIME = 3
+REQUEST_RETRY_TIME = 1
 # 请求重试间隔(s)
-REQUEST_RETRY_INTERVAL = 3
+REQUEST_RETRY_INTERVAL = 1
 # 请求超时(s)
-REQUEST_TIMEOUT = 10
+REQUEST_TIMEOUT = 7
 
 # 是否需要IP代理
 NEED_PROXY = True
@@ -35,10 +34,10 @@ MYSQL_SCHEMA = 'cg_spider'
 # 日志级别
 LOG_LEVEL = 'DEBUG'
 # 日志文件保留数量
-LOG_BACKUP_COUNT = 3
+LOG_BACKUP_COUNT = 30
 
 # 定时任务
 # 天工e招（天工开物电子招投标交易平台）
-TGCW_ZHAOBIAO_XMGG_CRON = '12 17 * * *'  # 招标公告
-TGCW_ZHAOBIAO_BIDZBGS_CRON = '13 17 * * *'  # 中标候选人公示
-TGCW_ZHAOBIAO_BIDZBGG_CRON = '14 17 * * *'  # 中标结果公告
+TGCW_ZHAOBIAO_XMGG_CRON = '5 0 * * *'  # 招标公告
+TGCW_ZHAOBIAO_BIDZBGS_CRON = '10 0 * * *'  # 中标候选人公示
+TGCW_ZHAOBIAO_BIDZBGG_CRON = '15 0 * * *'  # 中标结果公告

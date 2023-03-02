@@ -11,7 +11,6 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-import setting
 from const import tgcwZhaobiaoConst
 from dao import tgcwZhaobiaoDao
 from handler.configHandler import ConfigHandler
@@ -67,7 +66,7 @@ class TgcwZhaobiaoSpider:
         notice = TgcwZhaobiaoModel()
         notice.ori_id = id
         notice.type_code = self.type
-        notice.type_name = setting.TYPE_DICT.get(self.type, '')
+        notice.type_name = tgcwZhaobiaoConst.TYPE_DICT.get(self.type, '')
         notice.notice_title = title
         notice.publish_time = datetime.strptime(publish_time, "%Y-%m-%d %H:%M:%S")
         notice.notice_content = str(notice_content).replace('\n', '').strip()
