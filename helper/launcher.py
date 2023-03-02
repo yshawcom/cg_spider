@@ -19,6 +19,7 @@ def __show_configure():
     log.info('NEED_PROXY                : %s', conf.need_proxy)
     log.info('PROXY_POOL_URL            : %s', conf.proxy_pool_url)
     log.info('INTERVAL_DAYS             : %s', conf.interval_days)
+    log.info('MAX_THREAD                : %s', conf.max_thread)
     log.info('MYSQL_HOSTNAME            : %s', conf.mysql_hostname)
     log.info('MYSQL_PORT                : %s', conf.mysql_port)
     log.info('MYSQL_USERNAME            : %s', conf.mysql_username)

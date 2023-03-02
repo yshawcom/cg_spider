@@ -64,7 +64,8 @@ docker run -d \
 | `REQUEST_TIMEOUT` | 请求超时(s) | 10 | 
 | `NEED_PROXY` | 是否需要IP代理 | `True` | 
 | `PROXY_POOL_URL` | 代理IP池url | `http://127.0.0.1:5010/get/` | 
-| `INTERVAL_DAYS` | 每次执行爬取数据天数 | 20 | 
+| `INTERVAL_DAYS` | 每次执行爬取数据天数 | 2 | 
+| `MAX_THREAD` | 最大线程数 | 16 | 
 | `MYSQL_HOSTNAME` | MySQL数据库连接hostname | `localhost` | 
 | `MYSQL_PORT` | MySQL数据库连接port | 3306 | 
 | `MYSQL_USERNAME` | MySQL数据库连接username | `root` | 

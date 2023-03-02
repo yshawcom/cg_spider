@@ -69,6 +69,13 @@ class ConfigHandler(with_metaclass(Singleton)):
         return int(os.environ.get('INTERVAL_DAYS', setting.INTERVAL_DAYS))
 
     @LazyProperty
+    def max_thread(self):
+        """
+        最大线程数
+        """
+        return int(os.environ.get('MAX_THREAD', setting.MAX_THREAD))
+
+    @LazyProperty
     def mysql_hostname(self):
         """
         MySQL数据库连接hostname

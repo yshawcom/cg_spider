@@ -20,7 +20,10 @@ NEED_PROXY = True
 PROXY_POOL_URL = 'http://127.0.0.1:5010/get/'
 
 # 每次执行爬取过去几天的数据
-INTERVAL_DAYS = 20
+INTERVAL_DAYS = 2
+
+# 最大线程数
+MAX_THREAD = 32
 
 # MySQL数据库连接
 MYSQL_HOSTNAME = 'localhost'
