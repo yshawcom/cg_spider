@@ -38,7 +38,7 @@ pipreqs . --encoding=utf8 --force
 ### 安装依赖
 
 ```shell
-pip install -r requirements.txt
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 ```
 
 ## Docker 部署
@@ -81,3 +81,4 @@ docker run -d \
 | `TGCW_ZHAOBIAO_XMGG_CRON` | 天工e招招标公告执行Cron |  | 
 | `TGCW_ZHAOBIAO_BIDZBGS_CRON` | 天工e招中标候选人公示执行Cron |  | 
 | `TGCW_ZHAOBIAO_BIDZBGG_CRON` | 天工e招中标结果公告执行Cron |  | 
+| `EBNEW_CRON` | 必联网执行Cron |  | 

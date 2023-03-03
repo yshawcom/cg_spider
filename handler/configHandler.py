@@ -153,6 +153,13 @@ class ConfigHandler(with_metaclass(Singleton)):
                 os.environ.get('TGCW_ZHAOBIAO_BIDZBGG_CRON', setting.TGCW_ZHAOBIAO_BIDZBGG_CRON),
         }
 
+    @LazyProperty
+    def ebnew_cron(self):
+        """
+        必联网
+        """
+        return os.environ.get('EBNEW_CRON', setting.EBNEW_CRON)
+
 
 if __name__ == '__main__':
     conf = ConfigHandler()

@@ -19,13 +19,14 @@ from model.tgcwZhaobiaoModel import TgcwZhaobiaoModel
 from util import commonUtil
 from util.webRequest import WebRequest
 
+conf = ConfigHandler()
+log = LogHandler(tgcwZhaobiaoConst.NAME)
+
 
 class TgcwZhaobiaoSpider:
 
     def __init__(self, notice_type):
         self.type = notice_type
-        self.conf = ConfigHandler()
-        self.log = LogHandler(tgcwZhaobiaoConst.NAME)
 
     def parse_detail_html(self, url, html):
         """
@@ -36,12 +37,12 @@ class TgcwZhaobiaoSpider:
         """
 
         id = url[url.rindex('/') + 1: url.rindex('.')]
-        self.log.info('公告ID: %s', id)
+        log.info('公告ID: %s', id)
 
         # 判断数据库是否已存在相同id数据
         notice = tgcwZhaobiaoDao.find_top_by_ori_id_and_type_code(int(id), self.type)
         if notice is not None:
-            self.log.info('公告 %s 已存在', id)
+            log.info('公告 %s 已存在', id)
             return
 
         soup = BeautifulSoup(html, 'lxml')
@@ -51,16 +52,16 @@ class TgcwZhaobiaoSpider:
             return
 
         title = ninfo_title_h2s[0].text
-        self.log.info('公告名称: %s', title)
+        log.info('公告名称: %s', title)
 
         ninfo_title_spans = soup.select(
             '#main > div.listPage.wrap > div > div.mleft > div > div > div.ninfo-title > span')
         publish_time_text = ninfo_title_spans[0].text
         publish_time = publish_time_text[publish_time_text.index('：') + 1:].strip()
-        self.log.info('发布时间: %s', publish_time)
+        log.info('发布时间: %s', publish_time)
 
         notice_content = soup.select('#main > div.listPage.wrap > div > div.mleft > div > div > div.ninfo-con')[0]
-        # self.log.info('公告正文: %s', str(notice_content))
+        # log.info('公告正文: %s', str(notice_content))
 
         # 保存到数据库
         notice = TgcwZhaobiaoModel()
@@ -72,7 +73,7 @@ class TgcwZhaobiaoSpider:
         notice.notice_content = str(notice_content).replace('\n', '').strip()
         notice.update_time = datetime.now()
         tgcwZhaobiaoDao.save(notice)
-        self.log.info('公告 %s 已保存到数据库', id)
+        log.info('公告 %s 已保存到数据库', id)
 
     def request_detail(self, url):
         """
@@ -81,8 +82,8 @@ class TgcwZhaobiaoSpider:
         :return:
         """
 
-        self.log.info('请求公告页URL: %s', url)
-        resp_text = WebRequest(self.log).get(tgcwZhaobiaoConst.BASE_URL + url).text
+        log.info('请求公告页URL: %s', url)
+        resp_text = WebRequest(log).get(tgcwZhaobiaoConst.BASE_URL + url).text
         self.parse_detail_html(url, resp_text)
 
     def parse_list_html(self, html):
@@ -100,16 +101,16 @@ class TgcwZhaobiaoSpider:
         if len(uls) <= 0:
             return expired_notice
 
-        # self.log.error(uls)
+        # log.error(uls)
         ul = uls[0]
         for li in ul.find_all('li'):
-            self.log.info('')
+            log.info('')
             date_str = li.find_all('span', class_='bidDate')[0].text
             title = li.find_all('span', class_='bidLink')[0].text
-            self.log.info('[%s] %s', date_str, title)
+            log.info('[%s] %s', date_str, title)
 
-            if commonUtil.judge_expired(date_str, self.conf.interval_days):
-                self.log.info('该公告已过期，停止爬取')
+            if commonUtil.judge_expired(date_str, conf.interval_days):
+                log.info('该公告已过期，停止爬取')
                 expired_notice = True
                 break
 
@@ -125,23 +126,23 @@ class TgcwZhaobiaoSpider:
         """
 
         url = tgcwZhaobiaoConst.LIST_URL % (self.type, page_no)
-        self.log.info('请求列表URL: %s', url)
+        log.info('请求列表URL: %s', url)
 
-        resp_text = WebRequest(self.log).get(url).text
+        resp_text = WebRequest(log).get(url).text
         expired_notice = self.parse_list_html(resp_text)
         if expired_notice is False:
             # 整个列表都没有过期的公告，继续爬下一页
-            self.log.info('')
-            self.log.info('---------------- 请求列表第 %s 页', page_no + 1)
+            log.info('')
+            log.info('---------------- 请求列表第 %s 页', page_no + 1)
             self.request_list(page_no + 1)
         else:
-            self.log.info('已没有待爬取的公告数据')
+            log.info('已没有待爬取的公告数据')
 
     def run(self):
         # 页数
         page_no = 1
-        self.log.info('')
-        self.log.info('---------------- 请求列表第 %s 页', page_no)
+        log.info('')
+        log.info('---------------- 请求列表第 %s 页', page_no)
         self.request_list(page_no)
 
 

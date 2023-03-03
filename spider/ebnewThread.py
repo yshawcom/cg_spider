@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+"""
+必联网
+"""
 
 __author__ = 'shaw'
 
@@ -7,8 +10,10 @@ import threading
 
 from const import ebnewConst
 from handler.configHandler import ConfigHandler
+from handler.logHandler import LogHandler
 from spider.ebnewSpider import EbnewSpider
 
+log = LogHandler(ebnewConst.NAME)
 conf = ConfigHandler()
 
 
@@ -20,12 +25,12 @@ class EbnewThread(threading.Thread):
 
     def run(self):
         # 计算出每个线程的页面数
-        page_per_thread = ebnewConst.LIST_MAX_PAGE // conf.max_thread
+        page_per_thread = ebnewConst.LIST_MAX_PAGE / conf.max_thread
 
         for index in range(ebnewConst.LIST_MAX_PAGE):
-            page = index + 1
-            if page // page_per_thread + 1 == self.thread_id:
-                print('thread=%s, page=%s' % (self.thread_id, page))
+            if index // page_per_thread == self.thread_id:
+                page = index + 1
+                log.info('thread=%s, page=%s' % (self.thread_id, page))
                 EbnewSpider().run(page)
 
 
