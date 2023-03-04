@@ -39,7 +39,8 @@ def cron_2_trigger(cron_str):
     """
     cron表达式转 APScheduler trigger 参数
     """
-    trigger_dict = {}
+    trigger_dict = {'trigger': 'cron',
+                    'timezone': 'Asia/Shanghai'}
     for index, value in enumerate(cron_str.split(' ')):
         if index == 0:
             trigger_dict['minute'] = value

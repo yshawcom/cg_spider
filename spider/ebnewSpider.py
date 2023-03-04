@@ -20,6 +20,7 @@ from spider import ebnewSpiderExtra
 from util import commonUtil
 from util.webRequest import WebRequest
 
+
 log = LogHandler(ebnewConst.NAME)
 conf = ConfigHandler()
 
@@ -28,6 +29,7 @@ class EbnewSpider:
 
     def __init__(self):
         self.list_current_page = 1
+
 
     def parse_detail_html(self, ori_id, html):
         """
@@ -117,6 +119,7 @@ class EbnewSpider:
         log.info('---------------- 公告 %s 已保存到数据库', ori_id)
         log.info('')
 
+
     def request_detail(self, url, cookies=None):
         """
         请求公告详情页
@@ -143,6 +146,7 @@ class EbnewSpider:
             self.request_detail(url, cookies=cookie_jar)
         else:
             self.parse_detail_html(ori_id, resp.text)
+
 
     def parse_list_html(self, html):
         """
@@ -186,6 +190,7 @@ class EbnewSpider:
 
         return expired_notice
 
+
     def request_list(self, cookies=None):
         """
         请求公告列表
@@ -216,6 +221,7 @@ class EbnewSpider:
             log.info('================================ 请求列表第 %s 页', self.list_current_page)
             self.request_list()
         """
+
 
     def run(self, current_page):
         self.list_current_page = current_page

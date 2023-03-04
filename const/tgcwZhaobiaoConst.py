@@ -15,16 +15,22 @@ LIST_URL = BASE_URL + '/cms/channel/%s/index.htm?pageNo=%s'
 
 # 招标公告
 XMGG = 'xmgg'
-ID_XMGG = NAME + '_' + XMGG
+
 # 中标候选人公示
 BIDZBGS = 'bidzbgs'
-ID_BIDZBGS = NAME + '_' + BIDZBGS
+
 # 中标结果公告
 BIDZBGG = 'bidzbgg'
-ID_BIDZBGG = NAME + '_' + BIDZBGG
+
 # 公告类型名称
-TYPE_DICT = {
-    XMGG: '招标公告',
-    BIDZBGS: '中标候选人公示',
-    BIDZBGG: '中标结果公告',
-}
+TYPE_DICT = {XMGG: '招标公告',
+             BIDZBGS: '中标候选人公示',
+             BIDZBGG: '中标结果公告'}
+
+TYPES = (XMGG,
+         BIDZBGS,
+         BIDZBGG)
+
+IDS = (NAME + '_' + XMGG,
+       NAME + '_' + BIDZBGS,
+       NAME + '_' + BIDZBGG)

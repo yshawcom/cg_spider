@@ -19,6 +19,7 @@ from model.tgcwZhaobiaoModel import TgcwZhaobiaoModel
 from util import commonUtil
 from util.webRequest import WebRequest
 
+
 conf = ConfigHandler()
 log = LogHandler(tgcwZhaobiaoConst.NAME)
 
@@ -27,6 +28,7 @@ class TgcwZhaobiaoSpider:
 
     def __init__(self, notice_type):
         self.type = notice_type
+
 
     def parse_detail_html(self, url, html):
         """
@@ -75,6 +77,7 @@ class TgcwZhaobiaoSpider:
         tgcwZhaobiaoDao.save(notice)
         log.info('公告 %s 已保存到数据库', id)
 
+
     def request_detail(self, url):
         """
         请求公告页
@@ -85,6 +88,7 @@ class TgcwZhaobiaoSpider:
         log.info('请求公告页URL: %s', url)
         resp_text = WebRequest(log).get(tgcwZhaobiaoConst.BASE_URL + url).text
         self.parse_detail_html(url, resp_text)
+
 
     def parse_list_html(self, html):
         """
@@ -118,6 +122,7 @@ class TgcwZhaobiaoSpider:
 
         return expired_notice
 
+
     def request_list(self, page_no):
         """
         请求列表页
@@ -137,6 +142,7 @@ class TgcwZhaobiaoSpider:
             self.request_list(page_no + 1)
         else:
             log.info('已没有待爬取的公告数据')
+
 
     def run(self):
         # 页数

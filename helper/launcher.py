@@ -3,9 +3,9 @@
 
 __author__ = 'shaw'
 
-from const import tgcwZhaobiaoConst
 from handler.configHandler import ConfigHandler
 from handler.logHandler import LogHandler
+
 
 log = LogHandler('launcher')
 conf = ConfigHandler()
@@ -34,17 +34,20 @@ def __show_configure():
     log.info('LOG_BACKUP_COUNT: %s', conf.log_backup_count)
     log.info('')
     log.info('=========================== cron ==============================')
-    log.info('TGCW_ZHAOBIAO_XMGG_CRON   : %s', conf.tgcw_zhaobiao_cron[tgcwZhaobiaoConst.ID_XMGG])
-    log.info('TGCW_ZHAOBIAO_BIDZBGS_CRON: %s', conf.tgcw_zhaobiao_cron[tgcwZhaobiaoConst.ID_BIDZBGS])
-    log.info('TGCW_ZHAOBIAO_BIDZBGG_CRON: %s', conf.tgcw_zhaobiao_cron[tgcwZhaobiaoConst.ID_BIDZBGG])
+    log.info('TGCW_ZHAOBIAO_XMGG_CRON   : %s', conf.tgcw_zhaobiao_cron[0])
+    log.info('TGCW_ZHAOBIAO_BIDZBGS_CRON: %s', conf.tgcw_zhaobiao_cron[1])
+    log.info('TGCW_ZHAOBIAO_BIDZBGG_CRON: %s', conf.tgcw_zhaobiao_cron[2])
     log.info('EBNEW_CRON                : %s', conf.ebnew_cron)
-    log.info('============================================================')
+    log.info('JTSWW_BIDDING_NOTICE_CRON : %s', conf.jtsww_cron[0])
+    log.info('JTSWW_CANDIDATEAN_NO_CRON : %s', conf.jtsww_cron[1])
+    log.info('JTSWW_WIN_NOTICE_CRON     : %s', conf.jtsww_cron[2])
     log.info('')
 
 
 def start_scheduler():
     __show_configure()
     from helper.scheduler import run_scheduler
+
     run_scheduler()
 
 

@@ -17,7 +17,14 @@
 [必联网](https://www.ebnew.com/)
 
 * [招标项目](https://ss.ebnew.com/tradingSearch/index.htm)
-* [采购项目](https://ss.ebnew.com/purchaseSearch/list.htm)
+
+### jtsww
+
+[建投商务网（河北建投集团数字化招标采购平台）](https://www.jtsww.com/)
+
+* [招标公告](https://www.jtsww.com/notice?type=biddingnotice)
+* [中标候选人公示](https://www.jtsww.com/notice?type=candidateanno)
+* [中标结果公告](https://www.jtsww.com/notice?type=winnotice)
 
 ## 支持版本
 
@@ -82,3 +89,6 @@ docker run -d \
 | `TGCW_ZHAOBIAO_BIDZBGS_CRON` | 天工e招中标候选人公示执行Cron |  | 
 | `TGCW_ZHAOBIAO_BIDZBGG_CRON` | 天工e招中标结果公告执行Cron |  | 
 | `EBNEW_CRON` | 必联网执行Cron |  | 
+| `JTSWW_BIDDING_NOTICE_CRON` | 建投商务网招标公告执行Cron |  | 
+| `JTSWW_CANDIDATEAN_NO_CRON` | 建投商务网中标候选人公示执行Cron |  | 
+| `JTSWW_WIN_NOTICE_CRON` | 建投商务网中标结果公告执行Cron |  | 

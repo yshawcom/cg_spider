@@ -42,4 +42,8 @@ TGCW_ZHAOBIAO_XMGG_CRON = '5 0 * * *'  # 招标公告
 TGCW_ZHAOBIAO_BIDZBGS_CRON = '10 0 * * *'  # 中标候选人公示
 TGCW_ZHAOBIAO_BIDZBGG_CRON = '15 0 * * *'  # 中标结果公告
 # 必联网
-EBNEW_CRON = '20 0 * * *'  # 招标项目
+EBNEW_CRON = '35 0 * * *'  # 招标项目
+# 建投商务网
+JTSWW_BIDDING_NOTICE_CRON = '20 0 * * *'  # 招标公告
+JTSWW_CANDIDATEAN_NO_CRON = '25 0 * * *'  # 中标候选人公示
+JTSWW_WIN_NOTICE_CRON = '30 0 * * *'  # 中标结果公告

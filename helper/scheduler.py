@@ -5,15 +5,15 @@ __author__ = 'shaw'
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from const import tgcwZhaobiaoConst, ebnewConst
+from const import tgcwZhaobiaoConst as tgcw, ebnewConst as ebnew, jtswwConst as jtsww
 from handler.configHandler import ConfigHandler
 from spider.ebnewThread import EbnewThread
+from spider.jtswwSpider import JtswwSpider
 from spider.tgcwZhaobiaoSpider import TgcwZhaobiaoSpider
-from util import commonUtil
+from util.commonUtil import cron_2_trigger
+
 
 conf = ConfigHandler()
-timezone = 'Asia/Shanghai'
-trigger = 'cron'
 
 
 def run_ebnew_thread():
@@ -28,20 +28,18 @@ def run_ebnew_thread():
 def run_scheduler():
     scheduler = BlockingScheduler()
 
-    extra = commonUtil.cron_2_trigger(conf.tgcw_zhaobiao_cron[tgcwZhaobiaoConst.ID_XMGG])
-    scheduler.add_job(TgcwZhaobiaoSpider(tgcwZhaobiaoConst.XMGG).run, id=tgcwZhaobiaoConst.ID_XMGG,
-                      name='天工e招 招标公告', timezone=timezone, trigger=trigger, **extra)
+    # 天工e招
+    for i in range(3):
+        trigger = cron_2_trigger(conf.tgcw_zhaobiao_cron[i])
+        scheduler.add_job(TgcwZhaobiaoSpider(tgcw.TYPES[i]).run, id=tgcw.IDS[i], **trigger)
 
-    extra = commonUtil.cron_2_trigger(conf.tgcw_zhaobiao_cron[tgcwZhaobiaoConst.ID_BIDZBGS])
-    scheduler.add_job(TgcwZhaobiaoSpider(tgcwZhaobiaoConst.BIDZBGS).run, id=tgcwZhaobiaoConst.ID_BIDZBGS,
-                      name='天工e招 中标候选人公示', timezone=timezone, trigger=trigger, **extra)
+    # 必联网
+    trigger = cron_2_trigger(conf.ebnew_cron)
+    scheduler.add_job(run_ebnew_thread, id=ebnew.NAME, **trigger)
 
-    extra = commonUtil.cron_2_trigger(conf.tgcw_zhaobiao_cron[tgcwZhaobiaoConst.ID_BIDZBGG])
-    scheduler.add_job(TgcwZhaobiaoSpider(tgcwZhaobiaoConst.BIDZBGG).run, id=tgcwZhaobiaoConst.ID_BIDZBGG,
-                      name='天工e招 中标结果公告', timezone=timezone, trigger=trigger, **extra)
-
-    extra = commonUtil.cron_2_trigger(conf.ebnew_cron)
-    scheduler.add_job(run_ebnew_thread, id=ebnewConst.NAME,
-                      name='必联网 招标项目', timezone=timezone, trigger=trigger, **extra)
+    # 建投商务网
+    for i in range(3):
+        trigger = cron_2_trigger(conf.jtsww_cron[i])
+        scheduler.add_job(JtswwSpider(jtsww.TYPES[i]).run, id=jtsww.IDS[i], **trigger)
 
     scheduler.start()

@@ -19,9 +19,9 @@ class TgcwZhaobiaoModel(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True)
     # 原id
     ori_id = Column(Integer())
-    # 公告类型编码
+    # 公告类型编码，xmgg/bidzbgs/bidzbgg
     type_code = Column(String())
-    # 公告类型
+    # 公告类型，招标公告/中标候选人公示/中标结果公告
     type_name = Column(String())
     # 公告标题
     notice_title = Column(String())
